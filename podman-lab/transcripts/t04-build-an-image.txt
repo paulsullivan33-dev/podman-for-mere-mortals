@@ -1,0 +1,35 @@
+$ cat Containerfile
+FROM docker.io/library/alpine:3.20
+COPY greet.sh /usr/local/bin/greet
+RUN chmod +x /usr/local/bin/greet
+LABEL description="A tiny example image for the Podman guide"
+CMD ["/usr/local/bin/greet"]
+$ cat greet.sh
+#!/bin/sh
+echo "hello from my own image"
+echo "running on Alpine $(cat /etc/alpine-release)"
+$ podman build --network none -t localhost/mere-greeter:latest .
+STEP 1/5: FROM docker.io/library/alpine:3.20
+STEP 2/5: COPY greet.sh /usr/local/bin/greet
+--> f09c7965fba8
+STEP 3/5: RUN chmod +x /usr/local/bin/greet
+--> 2bbd08bf4fda
+STEP 4/5: LABEL description="A tiny example image for the Podman guide"
+--> 72cde7f3915c
+STEP 5/5: CMD ["/usr/local/bin/greet"]
+COMMIT localhost/mere-greeter:latest
+--> 0ca9e5adc73b
+Successfully tagged localhost/mere-greeter:latest
+0ca9e5adc73b1fd32343b7a3196f92dc6df8a3b3e3511a2b792beccde122aacd
+$ podman run --rm --network none localhost/mere-greeter:latest
+time="2026-10-24T04:31:26Z" level=warning msg="Failed to add conmon to cgroupfs sandbox cgroup: creating cgroup path /libpod_parent/conmon: write /sys/fs/cgroup/cgroup.subtree_control: invalid argument"
+hello from my own image
+running on Alpine 3.20.10
+$ podman history localhost/mere-greeter:latest
+ID            CREATED        CREATED BY                                     SIZE        COMMENT
+2bbd08bf4fda  1 second ago   /bin/sh -c #(nop) CMD ["/usr/local/bin/gre...  0B          FROM 72cde7f3915c
+<missing>     2 seconds ago  /bin/sh -c #(nop) LABEL description="A tin...  0B          FROM 2bbd08bf4fda
+<missing>     2 seconds ago  /bin/sh -c chmod +x /usr/local/bin/greet       4.61kB      FROM f09c7965fba8
+f09c7965fba8  4 seconds ago  /bin/sh -c #(nop) COPY file:49bc163ff85010...  4.61kB      FROM docker.io/library/alpine:3.20
+bf8527eb54c3  6 months ago   CMD ["/bin/sh"]                                0B          buildkit.dockerfile.v0
+<missing>     6 months ago   ADD alpine-minirootfs-3.20.10-x86_64.tar.g...  8.09MB      buildkit.dockerfile.v0

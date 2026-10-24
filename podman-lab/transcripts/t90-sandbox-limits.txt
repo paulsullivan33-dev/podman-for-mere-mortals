@@ -1,0 +1,6 @@
+$ podman run -d --name bridgeweb -p 8080:80 docker.io/library/nginx:alpine
+Error: netavark: setns: IO error: Operation not permitted (os error 1)
+$ podman rm -f bridgeweb
+bridgeweb
+$ systemctl --user status (rootless user services need a user bus)
+Failed to connect to bus: No medium found

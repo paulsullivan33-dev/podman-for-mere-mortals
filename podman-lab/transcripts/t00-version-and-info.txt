@@ -1,0 +1,6 @@
+$ podman --version
+podman version 4.9.3
+$ podman info --format runtime={{.Host.OCIRuntime.Name}} store={{.Store.GraphDriverName}} graphroot={{.Store.GraphRoot}} network={{.Host.NetworkBackend}} rootless={{.Host.Security.Rootless}} cgroups={{.Host.CgroupsVersion}}
+runtime=crun store=vfs graphroot=/home/hatch/workspace/podman-lab/vfsstore network=netavark rootless=false cgroups=v2
+$ podman version --format client {{.Client.Version}} (API {{.Client.APIVersion}})
+client 4.9.3 (API 4.9.3)

@@ -1,0 +1,84 @@
+Podman — the distilled commands
+====================================================================
+Placeholders: <image> is a full image name
+(docker.io/library/alpine:3.20); <name> is a
+container name you chose.
+
+FIRST CONTACT (chapters 3-4)
+--------------------------------------------------------------------
+  podman --version
+  podman info --format '{{.Host.Security.Rootless}}'
+                                   # true = rootless, the good way
+  podman pull docker.io/library/alpine:3.20
+  podman run --rm --network none \
+    docker.io/library/alpine:3.20 echo hello
+  podman run -d --name web -p 8080:80 \
+    docker.io/library/nginx:alpine
+  podman ps ; podman ps -a
+  podman logs web
+  podman exec -it web sh           # leave with exit / Ctrl-D
+
+LIFECYCLE (chapter 4)
+--------------------------------------------------------------------
+  podman stop web ; podman start web ; podman restart web
+  podman rm web                    # stopped containers only
+  podman rm -f web                 # force, even if running
+  podman inspect web --format '{{.State.Status}}'
+
+IMAGES (chapters 5-6)
+--------------------------------------------------------------------
+  podman images
+  podman image inspect <image>
+  podman history <image>           # the recipe, layer by layer
+  podman system df
+  cd my-context && podman build -t localhost/my-image:latest .
+  podman build --no-cache -t localhost/my-image:latest .
+
+VOLUMES (chapter 7)
+--------------------------------------------------------------------
+  podman volume create webdata
+  podman run --rm -v webdata:/data <image> <command>
+  podman run --rm -v "$PWD/hostdir":/host:ro \
+    docker.io/library/alpine:3.20 ls /host
+  podman volume ls
+  podman volume inspect webdata
+  podman volume rm webdata         # only when truly done
+
+NETWORKING (chapter 8)
+--------------------------------------------------------------------
+  podman run --network none <image> <command>
+  podman run --network host <image>
+  podman run -d -p 8080:80 <image> # publish: host 8080 -> ctr 80
+  podman port web
+  podman network ls ; podman network inspect podman-default-kube
+
+PODS (chapter 9 — documented only in this guide)
+--------------------------------------------------------------------
+  podman pod create --name app -p 8080:80
+  podman run -d --pod app <image>
+  podman pod ps ; podman pod stop app ; podman pod start app
+
+SERVICES (chapter 10)
+--------------------------------------------------------------------
+  # Quadlet: ~/.config/containers/systemd/web.container, then
+  systemctl --user daemon-reload
+  systemctl --user enable --now web.service
+  loginctl enable-linger $USER     # survive logout, start at boot
+  journalctl --user -u web -f
+  # Older way, for an existing container:
+  podman generate systemd --name web --files --new
+
+BACKUP AND MIGRATION (chapter 11)
+--------------------------------------------------------------------
+  podman commit web localhost/web-snapshot:latest
+  podman save -o web-snapshot.tar localhost/web-snapshot:latest
+  podman load -i web-snapshot.tar
+  podman run --rm -v webdata:/data:ro -v "$PWD":/backup \
+    docker.io/library/alpine:3.20 \
+    tar -czf /backup/webdata-backup.tar.gz -C /data .
+
+HOUSEKEEPING
+--------------------------------------------------------------------
+  podman system df
+  podman system prune              # stopped containers, loose ends
+  podman system prune --volumes    # also volumes: read its list first

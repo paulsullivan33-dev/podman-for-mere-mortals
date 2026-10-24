@@ -1,0 +1,113 @@
+The lab — one real install, inside a sandbox with rules
+====================================================================
+
+The lab is Podman as Ubuntu ships it,
+installed with apt on the build machine
+(an Ubuntu 24.04 sandbox, 2 CPUs,
+7.7 GB RAM):
+
+  * podman 4.9.3 (package
+    4.9.3+ds1-1ubuntu0.2), with crun,
+    netavark, buildah, uidmap,
+    fuse-overlayfs and slirp4netns from
+    the same repositories.
+  * Images pulled from docker.io:
+    library/alpine:3.20 (8.1 MB stored)
+    and library/nginx:alpine.
+
+The sandbox's rules, discovered by
+running into them (each is a transcript
+in podman-lab/transcripts/):
+
+  * User-ID maps for a new namespace
+    can only be written by the sandbox's
+    own runtime. newuidmap fails for a
+    normal user (t00-rootless-attempt),
+    and Podman's rootless re-exec fails
+    the same way one level down. Result:
+    no rootless mode. The lab ran
+    rootful, and the guide teaches
+    rootless as the normal path anyway.
+  * setns(2) is refused to ordinary
+    processes. Creating namespaces
+    works; stepping into one does not.
+    That one refusal explains three
+    documented-only items: netavark
+    cannot configure a bridge (t90),
+    crun cannot run podman exec (t02),
+    podman cp fails the same way, and
+    podman top with it.
+  * Control groups cannot be
+    delegated: writing
+    cgroup.subtree_control answers
+    EINVAL. Pod creation dies at its
+    parent cgroup (t05). Ordinary
+    containers run with cgroups
+    disabled; conmon prints a warning
+    about its own cgroup on every call,
+    which is the repeated warning line
+    in several transcripts. It is
+    noise from this workaround, not a
+    Podman behaviour.
+  * Overlay mounts are refused, and on
+    the sandbox's overlay-backed root
+    filesystem the default store
+    silently falls back to
+    fuse-overlayfs, which fails without
+    a FUSE device (t90-first-attempt,
+    the lab's first transcript and its
+    first dead end).
+
+So the lab's Podman was configured,
+through two small files, to run the
+way it could:
+
+  containers.conf:
+    [engine]
+    cgroup_manager = "cgroupfs"
+    events_logger = "file"
+    cgroups = "disabled"
+
+  storage.conf:
+    [storage]
+    driver = "vfs"
+    graphroot = ".../podman-lab/vfsstore"
+    runroot = ".../podman-lab/runroot"
+
+vfs stores each layer as a plain
+directory copy — slower and fatter than
+overlay, and the reason the lab's
+pulled Nginx accounts for more disk
+than the same image would on overlay.
+Numbers in the transcripts are the
+sandbox's, not a benchmark.
+
+What ran anyway, end to end: pull,
+images, inspect, foreground and
+detached runs, ps, logs, volumes
+(named and bind, read-only and not),
+a Containerfile build and its run,
+commit, save, rmi, load, generate
+systemd, and the Quadlet generator's
+dry run. The web container ran on
+--network host (the bridge being
+unavailable) and answered HTTP 200.
+
+systemd notes: the sandbox's systemd
+answers (255, "degraded") but runs no
+D-Bus and no user instances, so
+systemctl --user cannot connect
+(t90). A generated unit installed as a
+*system* service was attempted once:
+systemd started it, and crun failed
+creating the container's kernel
+keyring ("create keyring ...:
+Operation not permitted"), after which
+the unit was removed again. Unit
+*generation* is verified; a unit
+*running* a container is not — the
+guide says so in chapter 10.
+
+Transcripts of the verification runs
+are in podman-lab/transcripts/,
+t00-t07 and t90.

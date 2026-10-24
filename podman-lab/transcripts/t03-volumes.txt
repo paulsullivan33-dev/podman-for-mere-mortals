@@ -1,0 +1,17 @@
+$ podman volume create webdata
+webdata
+$ podman run --rm --network none -v webdata:/data alpine sh -c 'echo note > /data/note.txt'
+time="2026-10-24T04:31:17Z" level=warning msg="Failed to add conmon to cgroupfs sandbox cgroup: creating cgroup path /libpod_parent/conmon: write /sys/fs/cgroup/cgroup.subtree_control: invalid argument"
+total 4
+-rw-r--r--    1 root     root            51 Oct 24 04:31 note.txt
+$ podman run --rm --network none -v webdata:/data docker.io/library/alpine:3.20 cat /data/note.txt
+time="2026-10-24T04:31:18Z" level=warning msg="Failed to add conmon to cgroupfs sandbox cgroup: creating cgroup path /libpod_parent/conmon: write /sys/fs/cgroup/cgroup.subtree_control: invalid argument"
+written by a container that is about to be deleted
+$ podman run --rm --network none -v /tmp/hostdir-demo:/host:ro alpine cat /host/host-note.txt
+time="2026-10-24T04:31:19Z" level=warning msg="Failed to add conmon to cgroupfs sandbox cgroup: creating cgroup path /libpod_parent/conmon: write /sys/fs/cgroup/cgroup.subtree_control: invalid argument"
+a file that lives on the host
+$ podman volume ls
+DRIVER      VOLUME NAME
+local       webdata
+$ podman volume inspect webdata --format name={{.Name}} mountpoint={{.Mountpoint}} driver={{.Driver}}
+name=webdata mountpoint=/home/hatch/workspace/podman-lab/vfsstore/volumes/webdata/_data driver=local

@@ -1,0 +1,61 @@
+$ podman commit web localhost/web-snapshot:latest
+Getting image source signatures
+Copying blob sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba
+Copying blob sha256:347d70688a4f620ee434007bc3b622592c459d0c45cbc275d0c8c3db0d2cb3e5
+Copying blob sha256:0118eeeab20f23cb5712fe7b96dd0a3460b185c3f9fb0bdb59062a3972f5b9af
+Copying blob sha256:a027351c56d0ec60ff555693e0afdd9ac6536425c3a6cd70cfd99438c32cf33b
+Copying blob sha256:54733ab91a37b26f9dbcdebb53c37d88e967e1aca9e52984d231c7418c858dba
+Copying blob sha256:26fc657c345556a2c48a5cdaa66f5e31ea881a18184bc943ad42cc46e93d7139
+Copying blob sha256:6e2ae602f9d69418f36fd9c178e472fb6e6b468f6aadd3dbd759fcee552a7527
+Copying blob sha256:a617e334a194398d200a112e5d4a39c65aa720650fe0fae732bdb1d7d4fb53a0
+Copying blob sha256:c1f8f9541d8763c6d95f881a5555a6a78120317f270768989660b7692c458b76
+Copying config sha256:4dd868eb30c8cb3ed268a2598b729f946364d1197a193280f18bd7b3ec9f2cdc
+Writing manifest to image destination
+4dd868eb30c8cb3ed268a2598b729f946364d1197a193280f18bd7b3ec9f2cdc
+$ podman save -o /tmp/web-snapshot.tar localhost/web-snapshot:latest
+Copying blob sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba
+Copying blob sha256:347d70688a4f620ee434007bc3b622592c459d0c45cbc275d0c8c3db0d2cb3e5
+Copying blob sha256:0118eeeab20f23cb5712fe7b96dd0a3460b185c3f9fb0bdb59062a3972f5b9af
+Copying blob sha256:a027351c56d0ec60ff555693e0afdd9ac6536425c3a6cd70cfd99438c32cf33b
+Copying blob sha256:54733ab91a37b26f9dbcdebb53c37d88e967e1aca9e52984d231c7418c858dba
+Copying blob sha256:26fc657c345556a2c48a5cdaa66f5e31ea881a18184bc943ad42cc46e93d7139
+Copying blob sha256:6e2ae602f9d69418f36fd9c178e472fb6e6b468f6aadd3dbd759fcee552a7527
+Copying blob sha256:a617e334a194398d200a112e5d4a39c65aa720650fe0fae732bdb1d7d4fb53a0
+Copying blob sha256:c1f8f9541d8763c6d95f881a5555a6a78120317f270768989660b7692c458b76
+Copying config sha256:4dd868eb30c8cb3ed268a2598b729f946364d1197a193280f18bd7b3ec9f2cdc
+Writing manifest to image destination
+$ ls -la /tmp/web-snapshot.tar
+-rw-r--r-- 1 root root 64408576 Oct 24 04:31 /tmp/web-snapshot.tar
+$ podman rmi localhost/web-snapshot:latest
+Untagged: localhost/web-snapshot:latest
+Deleted: 4dd868eb30c8cb3ed268a2598b729f946364d1197a193280f18bd7b3ec9f2cdc
+$ podman load -i /tmp/web-snapshot.tar
+Getting image source signatures
+Copying blob sha256:26fc657c345556a2c48a5cdaa66f5e31ea881a18184bc943ad42cc46e93d7139
+Copying blob sha256:347d70688a4f620ee434007bc3b622592c459d0c45cbc275d0c8c3db0d2cb3e5
+Copying blob sha256:75c137aedfb2760f88629236cb7b797630aed0c3d91d626d1d1bb694878fc2ba
+Copying blob sha256:a027351c56d0ec60ff555693e0afdd9ac6536425c3a6cd70cfd99438c32cf33b
+Copying blob sha256:0118eeeab20f23cb5712fe7b96dd0a3460b185c3f9fb0bdb59062a3972f5b9af
+Copying blob sha256:54733ab91a37b26f9dbcdebb53c37d88e967e1aca9e52984d231c7418c858dba
+Copying blob sha256:6e2ae602f9d69418f36fd9c178e472fb6e6b468f6aadd3dbd759fcee552a7527
+Copying blob sha256:a617e334a194398d200a112e5d4a39c65aa720650fe0fae732bdb1d7d4fb53a0
+Copying blob sha256:c1f8f9541d8763c6d95f881a5555a6a78120317f270768989660b7692c458b76
+Copying config sha256:4dd868eb30c8cb3ed268a2598b729f946364d1197a193280f18bd7b3ec9f2cdc
+Writing manifest to image destination
+Loaded image: localhost/web-snapshot:latest
+$ podman images
+REPOSITORY                TAG         IMAGE ID      CREATED        SIZE
+localhost/podman-pause    4.9.3-0     8a8977811a21  4 seconds ago  836 kB
+localhost/web-snapshot    latest      4dd868eb30c8  4 seconds ago  64.4 MB
+localhost/mere-greeter    latest      0ca9e5adc73b  6 seconds ago  8.11 MB
+docker.io/library/nginx   alpine      3d6cab9c2941  2 days ago     64.4 MB
+docker.io/library/alpine  3.20        bf8527eb54c3  6 months ago   8.1 MB
+$ podman stop web
+web
+$ podman rm web
+web
+$ podman system df
+TYPE           TOTAL       ACTIVE      SIZE        RECLAIMABLE
+Images         8           0           73.37MB     73.37MB (100%)
+Containers     0           0           0B          0B (0%)
+Local Volumes  1           0           51B         51B (100%)

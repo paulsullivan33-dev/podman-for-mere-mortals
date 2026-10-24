@@ -1,0 +1,5 @@
+FROM docker.io/library/alpine:3.20
+COPY greet.sh /usr/local/bin/greet
+RUN chmod +x /usr/local/bin/greet
+LABEL description="A tiny example image for the Podman guide"
+CMD ["/usr/local/bin/greet"]

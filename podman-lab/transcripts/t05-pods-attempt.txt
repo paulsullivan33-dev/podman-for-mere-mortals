@@ -1,0 +1,7 @@
+$ podman pod create --name demo --network host
+Error: creating cgroup path /libpod_parent/be6513a03e877968263e63f0d0c96d107eee1f967e44b5ee138a8a92bd7e32d2: write /sys/fs/cgroup/cgroup.subtree_control: invalid argument
+$ podman pod ps
+POD ID      NAME        STATUS      CREATED     INFRA ID    # OF CONTAINERS
+note: pod creation is blocked by this sandbox's read-only cgroup
+delegation; on a normal host the same command succeeds. See
+criteria.md and chapter 9.

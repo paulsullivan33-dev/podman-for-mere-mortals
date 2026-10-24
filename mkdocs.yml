@@ -1,0 +1,28 @@
+site_name: Podman for Mere Mortals
+site_description: Containers without a daemon on a Linux machine of your own. Pulling and running images, building your own with a Containerfile, volumes that keep your data, honest networking, pods and Compose, and containers that start at boot under systemd.
+site_url: https://paulsullivan33-dev.github.io/podman-for-mere-mortals/
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Podman Is: what-podman-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Podman: installing-podman.md
+  - Your First Container: your-first-container.md
+  - Images and Registries: images-and-registries.md
+  - Building Images: building-images.md
+  - Storage and Volumes: storage-and-volumes.md
+  - Networking: networking.md
+  - Pods and Compose: pods-and-compose.md
+  - Running as Services: running-as-services.md
+  - Backup and Migration: backup-and-migration.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

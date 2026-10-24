@@ -1,0 +1,4 @@
+$ su - mortal -c "XDG_RUNTIME_DIR=/run/user/1000 podman info"
+time="2026-10-24T04:16:41Z" level=warning msg="\"/\" is not a shared mount, this could cause issues or missing mounts with rootless containers"
+time="2026-10-24T04:16:41Z" level=error msg="running `/usr/bin/newuidmap 14155 0 1000 1 1 10000 30000`: newuidmap: write to uid_map failed: Operation not permitted\n"
+Error: cannot set up namespace using "/usr/bin/newuidmap": exit status 1

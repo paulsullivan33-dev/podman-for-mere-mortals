@@ -1,0 +1,13 @@
+[Unit]
+Description=A small web server
+
+[Container]
+Image=docker.io/library/nginx:alpine
+ContainerName=web
+PublishPort=8080:80
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

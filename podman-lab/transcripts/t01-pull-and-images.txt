@@ -1,0 +1,32 @@
+$ podman pull docker.io/library/alpine:3.20
+Trying to pull docker.io/library/alpine:3.20...
+Getting image source signatures
+Copying blob sha256:25f1d6b1951ac8eb3740558fe94cb83d377bdadf95fd9f98b50d2e1b96130471
+Copying config sha256:bf8527eb54c3680e728d5b4b383a8ba730d72dae7236fbc8dff97ed6b224a731
+Writing manifest to image destination
+bf8527eb54c3680e728d5b4b383a8ba730d72dae7236fbc8dff97ed6b224a731
+$ podman pull docker.io/library/nginx:alpine
+Trying to pull docker.io/library/nginx:alpine...
+Getting image source signatures
+Copying blob sha256:2ec5fb117ffa9a78b15fb6a78745ffc569c8da0aee9f36ace4cd67a44b1fef79
+Copying blob sha256:12b85cff06fd7d383d36a9c96503fe049c9d4bf3dfda5cbb9ffa6ae99b9c07a6
+Copying blob sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788
+Copying blob sha256:7cc330898115ce55acccb0cc1e7dd091df4410c8c5f3c540710ee0ac689f5fcb
+Copying blob sha256:657023555a2a19dc6036468198bb350d2c7feaac7f2d0a3901b4dd3cb25e40c5
+Copying blob sha256:26185d08a3ec318dd85a6c9f2172e714ec13cececd7f33c533b40b1689f9fedb
+Copying blob sha256:9b0f7dfe35b2711a17f60dadd6d4035dc0cdee152538cc5c0987029e94679548
+Copying blob sha256:b9b388a21ecfde6ac80505f23f527146a2129dfb104e79b029bbd00d4cc1a919
+Copying config sha256:3d6cab9c2941df2441024a2f02a65ebe1b8916c3cbe7b9527f62627accea8004
+Writing manifest to image destination
+3d6cab9c2941df2441024a2f02a65ebe1b8916c3cbe7b9527f62627accea8004
+$ podman images
+REPOSITORY                TAG         IMAGE ID      CREATED       SIZE
+docker.io/library/nginx   alpine      3d6cab9c2941  2 days ago    64.4 MB
+docker.io/library/alpine  3.20        bf8527eb54c3  6 months ago  8.1 MB
+$ podman image inspect docker.io/library/alpine:3.20 --format id={{.ID}} size={{.Size}} layers={{len .RootFS.Layers}}
+id=bf8527eb54c3680e728d5b4b383a8ba730d72dae7236fbc8dff97ed6b224a731 size=8104044 layers=1
+$ podman system df
+TYPE           TOTAL       ACTIVE      SIZE        RECLAIMABLE
+Images         2           0           72.48MB     72.48MB (100%)
+Containers     0           0           0B          0B (0%)
+Local Volumes  0           0           0B          0B (0%)

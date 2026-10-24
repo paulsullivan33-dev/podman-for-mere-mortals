@@ -1,0 +1,33 @@
+$ podman run --rm docker.io/library/alpine:3.20 echo hello from inside the container
+time="2026-10-24T04:17:30Z" level=error msg="Unmounting /var/lib/containers/storage/overlay/96d05ad3b402d0af7a9a1212ce68e7a7c3417fbce283af5adff389d4eb4c2c71/merged: invalid argument"
+time="2026-10-24T04:17:30Z" level=error msg="Preparing container 5ee78ba04f5fe2510fa88cf9e2b3089b125157753343a7daa4cfe7eb43f866e1: netavark: setns: IO error: Operation not permitted (os error 1)"
+Error: mounting storage for container 5ee78ba04f5fe2510fa88cf9e2b3089b125157753343a7daa4cfe7eb43f866e1: creating overlay mount to /var/lib/containers/storage/overlay/96d05ad3b402d0af7a9a1212ce68e7a7c3417fbce283af5adff389d4eb4c2c71/merged, mount_data="lowerdir=/var/lib/containers/storage/overlay/l/B6QMZHSYMJOTGMVSCCF5MKILXD,upperdir=/var/lib/containers/storage/overlay/96d05ad3b402d0af7a9a1212ce68e7a7c3417fbce283af5adff389d4eb4c2c71/diff,workdir=/var/lib/containers/storage/overlay/96d05ad3b402d0af7a9a1212ce68e7a7c3417fbce283af5adff389d4eb4c2c71/work,volatile": using mount program /usr/bin/fuse-overlayfs: unknown argument ignored: lazytime
+fuse: device not found, try 'modprobe fuse' first
+fuse-overlayfs: cannot mount: No such file or directory
+: exit status 1
+$ podman run -d --name web -p 8080:80 docker.io/library/nginx:alpine
+Trying to pull docker.io/library/nginx:alpine...
+Getting image source signatures
+Copying blob sha256:2ec5fb117ffa9a78b15fb6a78745ffc569c8da0aee9f36ace4cd67a44b1fef79
+Copying blob sha256:12b85cff06fd7d383d36a9c96503fe049c9d4bf3dfda5cbb9ffa6ae99b9c07a6
+Copying blob sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788
+Copying blob sha256:7cc330898115ce55acccb0cc1e7dd091df4410c8c5f3c540710ee0ac689f5fcb
+Copying blob sha256:657023555a2a19dc6036468198bb350d2c7feaac7f2d0a3901b4dd3cb25e40c5
+Copying blob sha256:26185d08a3ec318dd85a6c9f2172e714ec13cececd7f33c533b40b1689f9fedb
+Copying blob sha256:9b0f7dfe35b2711a17f60dadd6d4035dc0cdee152538cc5c0987029e94679548
+Copying blob sha256:b9b388a21ecfde6ac80505f23f527146a2129dfb104e79b029bbd00d4cc1a919
+Copying config sha256:3d6cab9c2941df2441024a2f02a65ebe1b8916c3cbe7b9527f62627accea8004
+Writing manifest to image destination
+time="2026-10-24T04:17:43Z" level=error msg="Unmounting /var/lib/containers/storage/overlay/19fcb535b3e6415ce5ac28cb12fe7df4211db11bd33b64ed1e69febbb5a8f037/merged: invalid argument"
+time="2026-10-24T04:17:43Z" level=error msg="Preparing container f58248ef22545679ad05943659b4b7eff5daa31630637545ef0f5206c332a929: netavark: setns: IO error: Operation not permitted (os error 1)"
+Error: mounting storage for container f58248ef22545679ad05943659b4b7eff5daa31630637545ef0f5206c332a929: creating overlay mount to /var/lib/containers/storage/overlay/19fcb535b3e6415ce5ac28cb12fe7df4211db11bd33b64ed1e69febbb5a8f037/merged, mount_data="lowerdir=/var/lib/containers/storage/overlay/l/SP7UXS6MIUU5Z5QUXTKSDETSNP:/var/lib/containers/storage/overlay/l/6P3QTPQOBW4OIKIBNKMSOFCCOL:/var/lib/containers/storage/overlay/l/3HQ3FG476YYD53KQS5277AHP3E:/var/lib/containers/storage/overlay/l/U5BDPENGVDQ2TSQVEUNWX45ZTQ:/var/lib/containers/storage/overlay/l/GENSPQMBG6FIHBJBKLEC74IDHZ:/var/lib/containers/storage/overlay/l/XHSCZXOOSHOBJEHRAFCRZ3DCCE:/var/lib/containers/storage/overlay/l/BHU4NR7P7HYICRZ23BZCDIBBGY:/var/lib/containers/storage/overlay/l/GTNYHKMJ7NY3XGBJQVTQ3LABZI,upperdir=/var/lib/containers/storage/overlay/19fcb535b3e6415ce5ac28cb12fe7df4211db11bd33b64ed1e69febbb5a8f037/diff,workdir=/var/lib/containers/storage/overlay/19fcb535b3e6415ce5ac28cb12fe7df4211db11bd33b64ed1e69febbb5a8f037/work": using mount program /usr/bin/fuse-overlayfs: unknown argument ignored: lazytime
+fuse: device not found, try 'modprobe fuse' first
+fuse-overlayfs: cannot mount: No such file or directory
+: exit status 1
+$ podman ps
+CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+$ curl -s -o /dev/null -w HTTP %{http_code}\n http://localhost:8080/
+HTTP 301
+$ podman logs web
+$ podman exec web sh -c echo "exec runs as: $(id)"; ls /usr/share/nginx/html
+Error: can only create exec sessions on running containers: container state improper
