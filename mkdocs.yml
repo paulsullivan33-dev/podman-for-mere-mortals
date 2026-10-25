@@ -1,6 +1,7 @@
 site_name: Podman for Mere Mortals
 site_description: Containers without a daemon on a Linux machine of your own. Pulling and running images, building your own with a Containerfile, volumes that keep your data, honest networking, pods and Compose, and containers that start at boot under systemd.
 site_url: https://paulsullivan33-dev.github.io/podman-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
 
 # Guides live at the repo root (nice for GitHub browsing).
 # The deploy workflow copies them into docs/ before building.
